@@ -62,3 +62,15 @@
     from alloggio
     join prenotazione on prenotazione.id_alloggio = alloggio.id_alloggio
     and prenotazione.numero_ospiti >= 2;
+
+
+
+
+    # "view" per ritornare una tabella virtuale ordinata, unendo le informazioni che vogliamo visualizzare:
+
+    create view vista_info_prenotazioni as
+    -> select Utente.nome, Utente.cognome, Alloggio.indirizzo, Alloggio.città, Periodo.data_inizio, Periodo.data_fine, Prenotazione.totale_notti, Prenotazione.stato, Prenotazione.prezzo_totale
+    -> from Utente 
+    -> join Prenotazione on Utente.id_utente = Prenotazione.id_utente 
+    -> join Alloggio on Prenotazione.id_alloggio = Alloggio.id_alloggio 
+    -> join Periodo on Prenotazione.id_periodo = Periodo.id_periodo;
