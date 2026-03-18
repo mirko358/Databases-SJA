@@ -1,0 +1,44 @@
+#instagram 
+CREATE
+(Anna:User {name: "Anna"}),
+(Luca:User {name: "Luca"}),
+(Marco:User {name:"Marco"}),
+(Giulia: User {name:"Giulia"}),
+(Elena: User {name: "Elena"}),
+(Anna)-[:FOLLOW]-> (Luca),
+(Anna)-[:FOLLOW]-> (Marco),
+(Marco)-[:FOLLOW]-> (Anna),
+(Giulia)-[:FOLLOW]-> (Anna),
+(Giulia)-[:FOLLOW]-> (Luca),
+(Giulia)-[:FOLLOW]-> (Marco),
+(Giulia)-[:FOLLOW]-> (Elena)
+
+#Per sapere chi ha più di 1 follower
+MATCH (u:User)<-[:FOLLOW]-(f)
+WITH u, COUNT(f) AS followers
+WHERE followers > 1
+RETURN u.name, followers
+
+#Per sapere chi non segue nessuno
+MATCH (u:User)
+WHERE NOT (u)-[:FOLLOW]->()
+RETURN u.name
+
+
+#facebook
+CREATE
+(Alice:User {name: "Alice"}),
+(Bob:User {name: "Bob"}),
+(Carol:User {name: "Carol"}),
+(Dan:User {name: "Dan"}),
+(Alice)-[:AMICO_DI]-> (Bob),
+(Bob)-[:AMICO_DI]-> (Alice),
+(Alice)-[:AMICO_DI]-> (Carol),
+(Carol)-[:AMICO_DI]-> (Alice),
+(Bob)-[:AMICO_DI]-> (Dan),
+(Dan)-[:AMICO_DI]-> (Bob)
+
+#per restituire tutte le coppie di amici, mostrando la relazione una sola volta
+MATCH (u:User)-[:AMICO_DI]->(v:User)
+WHERE u.name < v.name
+RETURN u.name, v.name
